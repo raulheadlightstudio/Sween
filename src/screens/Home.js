@@ -1,7 +1,13 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { ListItem, Avatar, Badge } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { KeyboardAvoidingView, StatusBar, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  StatusBar,
+  View,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import { GlobalSessionContext } from '../context/sessionContext';
 import { ScrollView } from 'react-native-gesture-handler';
 import ListChat from '../components/Chat/ListChat';
@@ -16,10 +22,8 @@ import {
   getAllUsers,
 } from '../api/ApiService';
 import { Box, SectionList, Center, NativeBaseProvider } from 'native-base';
-import { Text } from 'react-native';
 import { opacity, width } from 'styled-system';
 import { rowInfoStyles } from '../styles/rowInfoStyles';
-import { TouchableOpacity } from 'react-native';
 
 const Home = ({ navigation }) => {
   const [user, setUser] = useState({});
@@ -54,6 +58,54 @@ const Home = ({ navigation }) => {
         'https://res.cloudinary.com/dslc2vjcz/image/upload/v1629725666/family_mzg2lp.jpg',
       message: 'Hola Familia, como estan?',
     },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jacksons',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
+    {
+      name: 'Chris Jackson',
+      avatar_url:
+        'https://res.cloudinary.com/dslc2vjcz/image/upload/v1618681932/Users/avataaars_34_dztzng.png',
+      message: 'I have a heard',
+    },
   ];
 
   const validateUser = async () => {
@@ -62,15 +114,8 @@ const Home = ({ navigation }) => {
 
     if (userInfo) {
       const data = JSON.parse(userInfo);
-      // setUser(data);
       setUserImage(image);
       getImage();
-
-      // console.log(user);
-      // console.log(userImage);
-
-      // console.log(imagen);
-
       dispatchSession(
         SessionActions.sessionAuthenticate({
           id: data.userPublicId,
@@ -83,24 +128,13 @@ const Home = ({ navigation }) => {
         })
       );
 
-      // const r = await getUserForNick(sessionState.username);
-
-      // console.log(sessionState);
-
-      // console.log(r.data.data[0].imageurl.length); //system byte
-
       await AsyncStorage.setItem('id', data.userPublicId.toString());
-      // console.log(r.data.data[0].userPublicId);
-      // console.log(r.data.data[0].imageurl)
-
       const id = await AsyncStorage.getItem('id');
       const g = await getMyGroups(id);
       const lg = g.data.data.length;
       let a = [];
       if (lg > 0) {
-        //console.log(g.data.data.length)
         for (let i = 0; i < lg; i++) {
-          //console.log(g.data.data[i].groupId)
           a.push(g.data.data[i].groupId);
         }
         const co = await getCoGroups(a, id);
@@ -153,84 +187,92 @@ const Home = ({ navigation }) => {
         </ScrollView> */}
 
         <View>
-          {list.map((l, i) => (
-            <TouchableOpacity
-              key={i}
-              onPress={() => {
-                console.log('open chat...');
-              }}
-              activeOpacity={0.5}
-            >
-              <ListItem key={i} bottomDivider>
-                <Avatar source={{ uri: l.avatar_url }} size="medium" rounded />
-                <ListItem.Content>
-                  <ListItem.Title style={{ fontFamily: 'Metropolis-Regular' }}>
-                    {l.name}
-                  </ListItem.Title>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      // backgroundColor: 'red',
-                      height: 50,
-                      width: '100%',
-                    }}
-                  >
-                    <ListItem.Subtitle
+          <ScrollView style={homeStyles.scroll}>
+            {list.map((l, i) => (
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  console.log('open chat...');
+                }}
+                activeOpacity={0.5}
+              >
+                <ListItem key={i} bottomDivider>
+                  <Avatar
+                    source={{ uri: l.avatar_url }}
+                    size="medium"
+                    rounded
+                  />
+                  <ListItem.Content>
+                    <ListItem.Title
                       style={{ fontFamily: 'Metropolis-Regular' }}
                     >
-                      {l.message}
-                    </ListItem.Subtitle>
-                    {/* <View style={{flexDirection:"row",justifyContent:'space-evenly'}}> */}
+                      {l.name}
+                    </ListItem.Title>
                     <View
                       style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                         // backgroundColor: 'red',
-                        // height:'100%'
+                        height: 50,
+                        width: '100%',
                       }}
                     >
-                      <Text
+                      <ListItem.Subtitle
+                        style={{ fontFamily: 'Metropolis-Regular' }}
+                      >
+                        {l.message}
+                      </ListItem.Subtitle>
+                      {/* <View style={{flexDirection:"row",justifyContent:'space-evenly'}}> */}
+                      <View
                         style={{
-                          fontFamily: 'Metropolis-Regular',
-                          fontSize: 14,
-                          color: 'gray',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          // backgroundColor: 'red',
+                          // height:'100%'
                         }}
                       >
-                        11:12 PM
-                      </Text>
-                      <View style={{ padding: 10 }}>
-                        <View
+                        <Text
                           style={{
-                            backgroundColor: '#0EADFF',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: 50,
-                            width: 20,
-                            height: 20,
-                            alignSelf: 'center',
+                            fontFamily: 'Metropolis-Regular',
+                            fontSize: 14,
+                            color: 'gray',
                           }}
                         >
-                          <Text
+                          11:12 PM
+                        </Text>
+                        <View style={{ padding: 10 }}>
+                          <View
                             style={{
-                              fontFamily: 'Metropolis-Regular',
-                              fontSize: 12,
-                              color: '#F0F2F4',
-                              fontWeight: 'bold',
+                              backgroundColor: '#0EADFF',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              borderRadius: 50,
+                              width: 20,
+                              height: 20,
+                              alignSelf: 'center',
                             }}
                           >
-                            99
-                          </Text>
+                            <Text
+                              style={{
+                                fontFamily: 'Metropolis-Regular',
+                                fontSize: 12,
+                                color: '#F0F2F4',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              99
+                            </Text>
+                          </View>
                         </View>
                       </View>
+                      {/* </View> */}
                     </View>
-                    {/* </View> */}
-                  </View>
-                </ListItem.Content>
-              </ListItem>
-            </TouchableOpacity>
-          ))}
+                  </ListItem.Content>
+                </ListItem>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
 
         {sessionState.menu && <MenuModal />}

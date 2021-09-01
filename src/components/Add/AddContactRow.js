@@ -2,17 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
+import { Badge, Avatar } from 'react-native-elements';
 import {
-  Icon,
-  Divider,
-  Badge,
-  Avatar,
-  BadgedIcon,
-  ListItem,
-  Chip,
-} from 'react-native-elements';
-import {
-  followersById,
   getContacts,
   sendFriendRequest,
   unfollowUser,
@@ -33,8 +24,6 @@ const AddContactRow = ({
   const subtractChat = () => unselect(id);
 
   const navigation = useNavigation();
-
-  const [pending, setPending] = useState(false);
 
   const verified = true;
   const online = true;
@@ -69,7 +58,6 @@ const AddContactRow = ({
     await unfollowUser(idSession, userPublicId);
     const followed = await getContacts(idSession);
     const filterFollowed = followed.data.data;
-    // console.log(unfollowList.data);
     handleDeleteContact(sessionState, idSession, userPublicId, filterFollowed);
   };
 
@@ -160,7 +148,6 @@ const AddContactRow = ({
         follow ? (
           <TouchableOpacity
             onPress={() => {
-              // handleUnfollowUser(userPublicId);
               handleChat();
             }}
             style={addContactRowStyles.pendingContainer}

@@ -7,6 +7,7 @@ import {
   View,
   Alert,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -32,6 +33,8 @@ import { updateModalStyles } from '../../styles/updateModalStyles';
 
 const MenuModal = () => {
   const navigation = useNavigation();
+  const deviceHeight = Dimensions.get('window').height;
+  const deviceWidth = Dimensions.get('window').width;
 
   const {
     imageConverted,
@@ -84,12 +87,16 @@ const MenuModal = () => {
   };
 
   const handleRequests = async () => {
-    const pending = await pendingRequests(2); //quemado
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const idSession = data.userPublicId;
+    const pending = await pendingRequests(idSession); //quemado
     setCounterFollowers(pending.length);
   };
 
   const handleContacts = async () => {
-    const contacts = await getContacts(2); //quemado
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const idSession = data.userPublicId;
+    const contacts = await getContacts(idSession); //quemado
     const contactsArray = contacts.data.data;
     setCounterContacts(contactsArray.length);
   };
@@ -120,20 +127,28 @@ const MenuModal = () => {
     await AsyncStorage.setItem('userInfo', JSON.stringify(data));
     navigation.replace('Home');
     if (update.data) {
-      Alert.alert('Swagger', 'Nombre cambiado con exito!');
+      Alert.alert('Sween', 'Nombre cambiado con exito!', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
   };
 
   const handleUpdateImage = async base64image => {
-    const userImg = await AsyncStorage.getItem('userImage');
     const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const idSession = data.userPublicId;
 
-    const updateImage = await updateUserImage(2, base64image); //quemado
+    const updateImage = await updateUserImage(idSession, base64image); //quemado
     await AsyncStorage.setItem('userImage', base64image);
 
     navigation.replace('Home');
     if (updateImage.data) {
-      Alert.alert('Sween', 'Foto cambiada con exito!');
+      Alert.alert('Sween', 'Foto cambiada con exito!', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
   };
 
@@ -212,7 +227,7 @@ const MenuModal = () => {
     return (
       <View>
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           visible={modalImage}
           onRequestClose={() => {
@@ -222,11 +237,11 @@ const MenuModal = () => {
           <View style={updateModalStyles.centeredViewImage}>
             <View style={updateModalStyles.modalView}>
               <Image
-                style={{ width: 275, height: 275 }}
+                style={{ height: deviceHeight - 475, width: deviceWidth - 75 }}
                 source={{
                   uri: 'data:image/jpeg;base64,' + imageProfile,
                 }}
-              ></Image>
+              />
               <View
                 style={{
                   flexDirection: 'row',
@@ -236,7 +251,7 @@ const MenuModal = () => {
               >
                 <View style={updateModalStyles.space}>
                   <TouchableOpacity
-                    activeOpacity={0.7}
+                    activeOpacity={0.5}
                     onPress={() => setModalImage(!modalImage)}
                   >
                     <Text style={updateModalStyles.textStyle}>Cancelar</Text>
@@ -323,7 +338,7 @@ const MenuModal = () => {
             <View style={menuModalStyles.headerImgContainer}>
               <Avatar
                 rounded
-                size={75}
+                size={100}
                 source={{
                   uri: imageConverted !== '' ? imageConverted : undefined,
                 }}
@@ -349,26 +364,22 @@ const MenuModal = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <Text
-            style={menuModalStyles.title}
-          >{`${sessionState.name} ${sessionState.lastName}`}</Text>
-          <Text style={menuModalStyles.subTitle}>@{sessionState.username}</Text>
+          <View style={menuModalStyles.paddingTopHeader}>
+            <Text
+              style={menuModalStyles.title}
+            >{`${sessionState.name} ${sessionState.lastName}`}</Text>
+            <Text style={menuModalStyles.subTitle}>
+              @{sessionState.username}
+            </Text>
+          </View>
           <RowInfo
             title="Nombre"
             body={`${sessionState.name} ${sessionState.lastName}`}
             press={() => setModalVisible(true)}
           />
           <RowInfo title="Nombre de usuario" body={sessionState.username} />
-          <RowInfo
-            title="Cumpleaños"
-            body={sessionState.birthday}
-            press={() => handleEditProfile('Cumpleaños')}
-          />
-          <RowInfo
-            title="Número de móvil"
-            body={sessionState.phone}
-            press={() => handleEditProfile('Número de móvil')}
-          />
+          <RowInfo title="Cumpleaños" body={sessionState.birthday} />
+          <RowInfo title="Número de móvil" body={sessionState.phone} />
           <RowInfo title="Contactos" body={counterContacts} badge />
           <RowInfo
             title="Seguidores"

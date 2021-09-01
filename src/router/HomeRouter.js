@@ -7,21 +7,9 @@ import FollowRequests from '../screens/FollowRequests';
 import Home from '../screens/Home';
 import RoomChat from '../screens/RoomChat';
 import ChatRoom from '../screens/Chat/ChatRoom';
-import { Icon } from 'react-native-elements';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { padding } from 'styled-system';
-import { Avatar } from 'react-native-elements';
-import { Text } from 'react-native';
-import firebase from 'firebase';
-import { firebaseChatConfig } from '../config';
-
-// if (!firebase.apps.length) {
-//   console.log('Inicializar');
-//   firebase.initializeApp(firebaseChatConfig);
-// } else {
-//   firebase.app(); // if already initialized, use that one
-// }
+import { Avatar, Icon } from 'react-native-elements';
 
 const Stack = createStackNavigator();
 

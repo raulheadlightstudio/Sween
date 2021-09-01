@@ -23,49 +23,22 @@ import {
 } from '../../api/ApiService';
 import { GlobalSessionContext } from '../../context/sessionContext';
 import { addModalStyles } from '../../styles/modalStyles';
-import { addUsers } from '../../utils/mockData';
 import AddContactRow from './AddContactRow';
-import ContactModal from './ContactModal';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { Alert } from 'react-native';
 
 const AddModal = ({ show, close, title, search, modalType, data }) => {
   const { sessionState, SessionActions, dispatchSession } =
     useContext(GlobalSessionContext);
   const [chatsSelected, setChatsSelected] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [contactsApi, setContactsApi] = useState([]);
+  const [contactsAsync, setContactsAsync] = useState([]);
   const [modalTypeState, setModalTypeState] = useState(modalType);
   const [arrayFollowers, setArrayFollowers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const modalCreateGroup = () => {
     console.log('modal');
-  };
-
-  const handleFirebase = (groupname, integrants, admins, image) => {
-    const dbh = firebase.firestore();
-    try {
-      dbh.collection('groups').add({
-        integrants: [
-          'a4cde450-01ff-11ec-9a03-0242ac130003',
-          'fc7156b4-0200-11ec-9a03-0242ac130003',
-          '03ed8764-0201-11ec-9a03-0242ac130003',
-          '1f15afbc-0201-11ec-9a03-0242ac130003',
-          '3c77e9bc-0201-11ec-9a03-0242ac130003',
-          '4077e2a6-0201-11ec-9a03-0242ac130003',
-        ],
-        admins: ['a4cde450-01ff-11ec-9a03-0242ac130003'],
-        groupImage:
-          '/9j/4AAQSkZJRgABAQAAAQABAAD/4gIoSUNDX1BST0ZJTEUAAQEAAAIYAAAAAAIQAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAAHRyWFlaAAABZAAAABRnWFlaAAABeAAAABRiWFlaAAABjAAAABRyVFJDAAABoAAAAChnVFJDAAABoAAAAChiVFJDAAABoAAAACh3dHB0AAAByAAAABRjcHJ0AAAB3AAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAFgAAAAcAHMAUgBHAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFhZWiAAAAAAAABvogAAOPUAAAOQWFlaIAAAAAAAAGKZAAC3hQAAGNpYWVogAAAAAAAAJKAAAA+EAAC2z3BhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABYWVogAAAAAAAA9tYAAQAAAADTLW1sdWMAAAAAAAAAAQAAAAxlblVTAAAAIAAAABwARwBvAG8AZwBsAGUAIABJAG4AYwAuACAAMgAwADEANv/bAEMA///////////////////////////////////////////////////////////////////////////////////////bAEMB///////////////////////////////////////////////////////////////////////////////////////AABEIASwBLAMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAAAAQID/8QAIBABAQEAAgMBAQADAAAAAAAAAAERITESQVGBAmFxkf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AwAAs7QBsBFAAQUA01BUNRQEFBUFECNMtKgDINCcqCiKAlUBjKmX46IDmrYDBigGAAsCAMAoIoAsVIqAAKAAAAIoCAaAGgCxBUaRZQEABUAA0ANXWVBdSgCCgIKoFQAZAAAAaYbnQACKCamg0msiounJlay/QZxcawBnDxaATxMUAw/2AAJv0DBQEF4OAQXDAQXDAQUAFNBMVN+J+gyAAACLqKByLUk0Ey1qfz9aUEyCgAAAAIKgAGgAAJ/X1VBz02hgLp5JIoHlF8oAHlDyhkTJ8BfI1MhgL+jOGA0icmgAAAAgAL23GJ22CgACIDQyl37QbGZWgAY0GqyuoC6rLUBQAZsRusAAooAAAAAAigIKAyAIIoCAAOkc3SdAKAJUABlrlnKBO3RmTGgGL3W2aCC4uAzmtRQAABlpKCAIoAAAAAAAAABYzmNlVGEaxAQXDARv+emV/kGwAQMAFAAABLNUBFEoKmpqA1qsxeACigyAKAIAAAAAAAAKAqIKAyKgBOwBsABFZvwDyJWVBpWeVBRAFTIoDOGVQCAoIogFZaY6oNCKigAAAAAAAKAqAAIACAoKqKCM2Ns0GVWwgKAAAAqKAACKzzrQCKgKxY2lBjppk6BoTVRQAAAAAFAVAABFQBFQGoqRQAAQDYAAAAAAAACXuKnuKAJ7/ABQAUGBagIapgGqzhyDQzporQzpoNigiAAAAiNICiKAACVlagNRQAAAAAT/KoBpE/wCLAX2HugAAFZaQEFEVBQEMUBMFAaAVBAAAASrgCKigAAze0WoDYQAAAAATpQE6TVOQJ7UAAAEqlBlQRQAAAAAFFFRFAAAEFQEVFAABKy2yBK0w1KCgAAAAACAKIAogCggCNVlBRFFAAAAaAVAAAAAAEAAAAM0AZyrIoAAACfgAaAAAAmgoigCKC+mWolBAEVRAFABoBUAAAAAAEVAAAALcAYt05q4DU6AARQE/AMAQAQAUNEBrViEEWLUq+gZFRFAAVFQGwFQAAAAAASqUEAAZt6aYvINSq5tSg0JaaCpVQAAEABBUFAxQABFpCIC1GqygACgANgKgAAAAAAACAAM8NJ+AyjWW9rkBhToBeVZmtAAgAAAAAAAICwovoFnSUhQQBFAAbBNVFE05BRFwDU1QE5OVAQWoAAAACWJjSAdAAIAAACL2UBAAAAWIsAaZrUBmi1EAAVrFRVQAAAAAAAARUABAUQAABANA6FAQMhAWIqewEKAAAAAvohEBustemaACIr//2Q==',
-        nameGroup: 'Familia Gonzales 😬',
-      });
-
-      console.log('Registro creado');
-    } catch (error) {
-      console.log('error', error);
-    }
   };
 
   const handleHide = () => {
@@ -91,34 +64,9 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
     setChatsSelected([...nChats]);
   };
 
-  // console.log('renderizado', modalType);
-
   const handleUsers = async e => {
-    // console.log('handleUsers', e);
     const users = await getUserForNick(e);
     setFilteredUsers(users.data.data);
-    // const userFil = filteredUsers.filter(
-    //   filteredUsers => filteredUsers.userPublicId === sessionState.id
-    // );
-
-    // console.log(userFil)
-
-    // console.log(users.filter(data=> ))
-    // sessionState.id
-
-    // console.log(
-    //   filteredUsers.filter(
-    //     filteredUsers => filteredUsers.userPublicId != sessionState.id
-    //   )
-    // );
-
-    // console.log('filteredUsers', filteredUsers);
-  };
-
-  const handleSearchContacts = async e => {
-    const contacts = await handleContacts();
-    contacts.filter(name => name.userPublicName.includes(e));
-    // .map(contact => console.log(contact.userPublicName));
   };
 
   const handleTest = (sessionState, contactsArray) => {
@@ -128,13 +76,13 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
   };
 
   const handleContacts = async () => {
-    const myContacts = await getContacts(2); //quemado
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const idSession = data.userPublicId;
+    const myContacts = await getContacts(idSession); //quemado
     await AsyncStorage.setItem(
       'storageContacts',
       JSON.stringify(myContacts.data.data)
     );
-    setContactsApi(myContacts.data.data);
-
     const arrcon = myContacts.data.data;
 
     handleTest(sessionState, arrcon);
@@ -144,11 +92,12 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
 
   const getMyAsyncContacts = async () => {
     const contacts = await AsyncStorage.getItem('storageContacts');
-
+    setContactsAsync(contacts);
     return contacts;
   };
 
   useEffect(() => {
+    getMyAsyncContacts();
     handleFilterContacts();
     if (modalTypeState === 'myContacts') {
       handleContacts();
@@ -168,7 +117,6 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
   };
 
   const arraycontactos = sessionState.contacts;
-  // console.log('arraycontactos', arraycontactos);
 
   return (
     <KeyboardAvoidingView behavior="padding">
@@ -213,7 +161,7 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
                 </View>
               ) : null}
 
-              {modalVisible ? modalCreateGroup() : console.log('Cerrar')}
+              {modalVisible ? modalCreateGroup() : null}
 
               {modalTypeState !== 'addChat' ? (
                 <View style={addModalStyles.quickAddContainer}>
@@ -289,24 +237,32 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
                     showsVerticalScrollIndicator={false}
                     activeOpacity={0.9}
                   >
-                    {filteredUsers
-                      .filter(
-                        filteredUsers =>
-                          filteredUsers.userPublicId !== sessionState.id &&
-                          !arrayFollowers.includes(filteredUsers.userPublicId)
-                      )
-                      .map(user => (
-                        <AddContactRow
-                          key={user.userPublicId}
-                          contact={user}
-                          type={modalTypeState}
-                          select={handleChat}
-                          unselect={handleUnchat}
-                          selected={chatsSelected.find(chat =>
-                            chat === user.userPublicId ? true : false
-                          )}
-                        />
-                      ))}
+                    {filteredUsers ? (
+                      filteredUsers
+                        .filter(
+                          filteredUsers =>
+                            filteredUsers.userPublicId !== sessionState.id &&
+                            !arrayFollowers.includes(filteredUsers.userPublicId)
+                        )
+                        .map(user => (
+                          <AddContactRow
+                            key={user.userPublicId}
+                            contact={user}
+                            type={modalTypeState}
+                            select={handleChat}
+                            unselect={handleUnchat}
+                            selected={chatsSelected.find(chat =>
+                              chat === user.userPublicId ? true : false
+                            )}
+                          />
+                        ))
+                    ) : (
+                      <View style={{ padding: 10 }}>
+                        <Text style={{ fontSize: 16 }}>
+                          Nothing to show at this moment ...
+                        </Text>
+                      </View>
+                    )}
                   </ScrollView>
                 ) : (
                   <ScrollView
@@ -329,23 +285,10 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
                 )}
               </View>
 
-              {/* {modalTypeState === 'addChat' && (
-                <TouchableOpacity
-                  style={
-                    chatsSelected.length === 0
-                      ? addModalStyles.chatButtonDisabled
-                      : addModalStyles.chatButton
-                  }
-                >
-                  <Text style={addModalStyles.chatTitle}>Chatear</Text>
-                </TouchableOpacity>
-              )} */}
-
               {modalTypeState === 'group' && (
                 <TouchableOpacity
                   onPress={() => {
-                    handleFirebase();
-                    // setModalVisible(!modalVisible);
+                    setModalVisible(!modalVisible);
                   }}
                   style={
                     chatsSelected.length === 0
