@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="537" height="568" viewBox="0 0 537 568">
+  <g id="Grupo_2" data-name="Grupo 2" transform="translate(2236 1915)">
+    <path id="user-solid" d="M224,256A128,128,0,1,0,96,128,127.99,127.99,0,0,0,224,256Zm89.6,32H296.9a174.075,174.075,0,0,1-145.8,0H134.4A134.435,134.435,0,0,0,0,422.4V464a48.012,48.012,0,0,0,48,48H400a48.012,48.012,0,0,0,48-48V422.4A134.435,134.435,0,0,0,313.6,288Z" transform="translate(-2236 -1915)" fill="#fff"/>
+    <g id="Grupo_1" data-name="Grupo 1" transform="translate(-385 -68)">
+      <circle id="Elipse_3" data-name="Elipse 3" cx="164.5" cy="164.5" r="164.5" transform="translate(-1643 -1608)" fill="#52b1f8"/>
+      <circle id="Elipse_2" data-name="Elipse 2" cx="137.5" cy="137.5" r="137.5" transform="translate(-1616 -1581)" fill="#fff"/>
+      <line id="Línea_1" data-name="Línea 1" y2="148.318" transform="translate(-1478.076 -1517.358)" fill="none" stroke="#52b1f8" stroke-linecap="round" stroke-width="45"/>
+      <line id="Línea_2" data-name="Línea 2" x2="159.761" transform="translate(-1558.548 -1443.076)" fill="none" stroke="#52b1f8" stroke-linecap="round" stroke-width="45"/>
+    </g>
+  </g>
+</svg>
