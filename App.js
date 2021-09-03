@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -10,7 +10,7 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Validation from './src/screens/Validation';
 import firebase from 'firebase';
-import { firebaseConfig, firebaseChatConfig } from './src/config';
+import { firebaseConfig } from './src/config';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -44,5 +44,3 @@ const App = () => {
 };
 
 export default App;
-
-//prueba 2

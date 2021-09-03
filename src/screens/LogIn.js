@@ -10,8 +10,6 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import { loginStyles } from '../styles/login';
-import { registerErrorStyles } from '../styles/register';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Select,
@@ -21,6 +19,8 @@ import {
   HStack,
   Stack,
 } from 'native-base';
+import { loginStyles } from '../styles/login';
+import { registerErrorStyles } from '../styles/register';
 import { getUserForPhone } from '../api/ApiService';
 
 const theme = extendTheme({
@@ -67,7 +67,11 @@ const LogIn = ({ navigation }) => {
     if (logState.phone.length > 9) {
       await AsyncStorage.setItem('phone_ext', ext + logState.phone);
     } else {
-      alert('Por favor ingresa 10 digitos válidos');
+      Alert.alert('Sween', 'Por favor ingresa 10 digitos válidos', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
 
     try {
@@ -75,12 +79,20 @@ const LogIn = ({ navigation }) => {
       const response = await getUserForPhone(logState.phone);
       const rp = response.data.data;
       if (rp === null) {
-        alert('Eres nuevo por aqui? Registrate');
+        Alert.alert('Sween', 'Eres nuevo por aqui? Registrate', [
+          {
+            text: 'Confirmar',
+          },
+        ]);
       } else {
         navigation.navigate('Validation');
       }
     } catch (ex) {
-      alert('Asegurate de estar conectadoa una red');
+      Alert.alert('Sween', 'Asegurate de estar conectadoa una red', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
   };
 
@@ -125,6 +137,7 @@ const LogIn = ({ navigation }) => {
                     style={loginStyles.inputs}
                     onChangeText={handlePhone}
                     minWidth={200}
+                    maxLength={10}
                   />
                   {errorState.name !== '' && (
                     <Text style={registerErrorStyles.text}>

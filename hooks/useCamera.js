@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Camera } from 'expo-camera';
 import { useState } from 'react';
-import CameraView from '../src/components/Camera/CameraView';
+import { Alert } from 'react-native';
 
 export const useCamera = () => {
   const [hasPermission, setHasPermission] = useState(false);
@@ -15,7 +15,11 @@ export const useCamera = () => {
     {
       status === 'granted'
         ? setHasPermission(true)
-        : alert('Asegurate de darle los permisos adecuados');
+        : Alert.alert('Sween', 'Asegurate de darle los permisos adecuados', [
+            {
+              text: 'Confirmar',
+            },
+          ]);
     }
   };
 

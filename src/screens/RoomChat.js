@@ -7,9 +7,8 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import {
@@ -80,7 +79,15 @@ const RoomChat = ({ route, navigation }) => {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+          Alert.alert(
+            'Sween',
+            'Sorry, we need camera roll permissions to make this work!',
+            [
+              {
+                text: 'Confirmar',
+              },
+            ]
+          );
         }
       }
     })();

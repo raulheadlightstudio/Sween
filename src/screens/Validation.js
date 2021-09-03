@@ -4,17 +4,17 @@ import {
   View,
   KeyboardAvoidingView,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   StatusBar,
   Keyboard,
+  Alert,
 } from 'react-native';
+import { Input, NativeBaseProvider } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from 'firebase';
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
 import { firebaseConfig } from '../config.js';
 import { loginStyles } from '../styles/login';
-import { Input, NativeBaseProvider } from 'native-base';
 import { getUserForPhone } from '../api/ApiService';
 
 const Validation = ({ navigation }) => {
@@ -54,21 +54,27 @@ const Validation = ({ navigation }) => {
         userCountry: 'MX',
         email: rp?.email,
         birthday: rp?.birthday,
-        // imageurl: rp?.imageurl,
       };
 
       await AsyncStorage.setItem('userInfo', JSON.stringify(json));
       await AsyncStorage.setItem('userImage', rp.imageurl);
       navigation.navigate('Home');
-      //await AsyncStorage.setItem('userInfo', JSON.stringify(json)); INTEGRAR EN LOGIN
-      alert('Autenticación correcta!');
+
+      Alert.alert('Sween', 'Autenticación correcta', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     } catch (e) {
-      console.log(e);
-      alert('Intenta de nuevo!');
+      Alert.alert('Sween', 'Intenta de nuevo!', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
   };
 
-  async function signInWithPhoneNumber() {
+  const signInWithPhoneNumber = async () => {
     try {
       const number = await AsyncStorage.getItem('phone_ext');
       setPhoneNumber(number);
@@ -80,10 +86,13 @@ const Validation = ({ navigation }) => {
       setVerification(response.toString());
       alert('Hemos enviado tu código');
     } catch (e) {
-      console.log('No entro a signInWithPhoneNumber');
-      alert(e);
+      Alert.alert('Sween', e, [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
-  }
+  };
 
   return (
     <NativeBaseProvider>
@@ -109,6 +118,7 @@ const Validation = ({ navigation }) => {
                 clearButtonMode="while-editing"
                 onChangeText={text => setCoding(text)}
                 defaultValue={coding}
+                maxLength={6}
               />
               <TouchableOpacity onPress={handleRe}>
                 <Text style={loginStyles.button}>Enviar código</Text>

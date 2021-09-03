@@ -6,8 +6,6 @@ const updateModalStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalView: {
-    borderTopStartRadius: 15,
-    borderTopEndRadius: 15,
     padding: 35,
     shadowColor: '#000',
     shadowOffset: {
@@ -17,6 +15,7 @@ const updateModalStyles = StyleSheet.create({
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
     elevation: 7,
+    backgroundColor: 'white',
   },
   button: {
     borderRadius: 10,
@@ -60,6 +59,10 @@ const updateModalStyles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  imageModalSize: {
+    width: '50%',
+    height: '50%',
   },
 });
 

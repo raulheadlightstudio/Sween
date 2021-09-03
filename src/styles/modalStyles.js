@@ -6,6 +6,9 @@ const menuModalStyles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: 'rgba(25,25,25,.75)',
   },
+  paddingTopHeader: {
+    paddingTop: 10,
+  },
   container: {
     marginTop: 50,
     backgroundColor: 'white',

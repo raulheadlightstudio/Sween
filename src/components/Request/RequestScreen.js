@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { TouchableOpacity, Text, Image, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { AcceptUser, followersById, RejectUser } from '../../api/ApiService';
@@ -185,25 +184,28 @@ const RequestScreen = ({ request, section, onPress }) => {
         </View>
       )}
       <View style={requestsStyles.actionsBlock}>
-        <Text>a</Text>
-        <TouchableOpacity
-          style={requestsStyles.delete}
-          onPress={() => {
-            // onPress(stateRequest);
-            // console.log(sessionState);
-            // handleFollowersArray();
-            // handleDeleteFollowerApi();
-            // onPress(stateRequest);
-            onPress(stateRequest);
-          }}
-        >
-          <Icon
-            name="close-circle-outline"
-            type="ionicon"
-            color="#0EADFF"
-            size={20}
-          />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ marginRight: 10 }}>
+            <Text style={{ color: '#0EADFF', fontSize: 13, top: 5 }}>
+              Cancelar Solicitud
+            </Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={requestsStyles.delete}
+              onPress={() => {
+                onPress(stateRequest);
+              }}
+            >
+              <Icon
+                name="close-circle-outline"
+                type="ionicon"
+                color="#0EADFF"
+                size={15}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
       {/* {section === 'Usuarios que sigues' &&
         (stateRequest.blocked ? (

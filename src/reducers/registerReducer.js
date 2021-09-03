@@ -10,8 +10,6 @@ export const initialRegisterState = {
   error: '',
 };
 
-//comentario
-
 export const registerReducer = (state = initialRegisterState, action) => {
   switch (action.type) {
     case types.RegisterName:

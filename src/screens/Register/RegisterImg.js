@@ -56,15 +56,10 @@ const RegisterImg = ({ navigation }) => {
       email: registerState.email,
       birthday: registerState.birthday,
       imageurl: await AsyncStorage.getItem('img'),
-      // imageurl: registerState.photo,
     };
-
-    // console.log('Response', JSON.stringify(json, null, 4)); //
 
     try {
       const response = await registerUser(json);
-      // console.log(response);
-
       if (response.data !== true) {
         return Alert.alert(
           'Hubo un error',
@@ -83,14 +78,18 @@ const RegisterImg = ({ navigation }) => {
       } else {
         setSavingState(false);
         alert(
-          `Bienvenido a sween ${json.userName}, se hah registrado tus datos...`
+          `Bienvenido a Sween ${json.userName}, se han registrado tus datos...`
         );
         setImageTaken(true);
         removeItemValue('img');
         navigation.replace('Home');
       }
     } catch (error) {
-      alert('Asegurate de tener una conexión a internet!');
+      Alert.alert('Sween', 'Asegurate de tener una conexión a internet!', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
       console.log(error);
     }
   };
@@ -100,7 +99,11 @@ const RegisterImg = ({ navigation }) => {
     {
       status === 'granted'
         ? setHasPermission(true)
-        : alert('Asegurate de darle los permisos adecuados');
+        : Alert.alert('Sween', 'Asegurate de darle los permisos adecuados', [
+            {
+              text: 'Confirmar',
+            },
+          ]);
     }
   };
 
@@ -147,7 +150,6 @@ const RegisterImg = ({ navigation }) => {
 
   useEffect(() => {
     if (savingState) {
-      // handleNext();
     }
   }, [registerState.photo]);
 
@@ -158,7 +160,6 @@ const RegisterImg = ({ navigation }) => {
   }, [registerState]);
 
   const dispatchPhoto = async base64 => {
-    // dispatchRegister(RegisterActions.registerPhoto(base64));
     await AsyncStorage.setItem('img', base64);
   };
 
@@ -176,11 +177,6 @@ const RegisterImg = ({ navigation }) => {
   };
 
   const handleConvert = async ({ height, width, uri }) => {
-    // const { height, width, uri } = capturedImage;
-    // console.log(photo)
-    // console.log(typeof uri);
-    // console.log('uri', uri);
-    // console.log('capturedImagecapturedImagecapturedImage', capturedImage);
     try {
       const manipResult = await ImageManipulator.manipulateAsync(
         uri,
@@ -188,14 +184,6 @@ const RegisterImg = ({ navigation }) => {
         { compress: 0.5, base64: true }
       );
       const { base64 } = manipResult;
-
-      // const base64 = await FileSystem.readAsStringAsync(uri, {
-      //   encoding: FileSystem.EncodingType.Base64,
-      //   length: 100,
-      // });
-      // console.log('Convertido a base 64');
-      // console.log('Tamano', base64.length);
-
       handleDecodeImage(base64);
       dispatchPhoto(base64);
     } catch (error) {
@@ -214,27 +202,12 @@ const RegisterImg = ({ navigation }) => {
 
   const handleSave = capturedImage => {
     setSavingState(true);
-    // console.log('Entrando al handleSave', capturedImage);
     handleConvert(capturedImage);
 
     navigation.replace('RegisterImg');
-
-    // setHasPermission(false);
-    // console.log('setHasPermission', setHasPermission);
   };
 
   if (hasPermission) {
-    //capturedImage obj{height,uri,width}
-    // console.log('Se obtubieron permisos:', hasPermission);
-    // console.log('previewVisible', previewVisible);
-    // console.log('capturedImage', capturedImage);
-
-    // if (capturedImage) {
-    //   handleSave(capturedImage);
-    //   console.log('Se tomo la foto!', capturedImage);
-    //   // console.log(savingState);
-    // }
-
     return (
       <CameraView
         permission={hasPermission}

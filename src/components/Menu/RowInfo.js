@@ -16,7 +16,11 @@ const RowInfo = ({
   icon,
 }) => {
   return (
-    <TouchableOpacity style={rowInfoStyles.container} onPress={press}>
+    <TouchableOpacity
+      style={rowInfoStyles.container}
+      onPress={press}
+      activeOpacity={1}
+    >
       <Text
         style={{ ...rowInfoStyles.title, color: logout ? '#0EADFF' : 'black' }}
       >
