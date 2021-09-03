@@ -82,7 +82,7 @@ const TextBarChat = () => {
   // };
 
   const handleAdd = () => {
-    console.log('uwu');
+    console.log('handleAdd');
   };
 
   return (

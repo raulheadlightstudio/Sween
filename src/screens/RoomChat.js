@@ -10,7 +10,6 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 import {
   ScrollView,
   TouchableWithoutFeedback,
@@ -19,7 +18,6 @@ import { editPageStyles } from '../styles/editStyles';
 import RoomChatHeader from '../components/Header/RoomChatHeader';
 import { chats } from '../utils/mockData';
 import ChatMsg from '../components/Chat/ChatMsg';
-import { chatMsgStyles } from '../styles/chatStyles';
 import TextBarChat from '../components/Chat/TextBarChat';
 import { GlobalSessionContext } from '../context/sessionContext';
 import ChatProfileModal from '../components/Chat/ChatProfileModal';

@@ -82,7 +82,7 @@ const RegisterEmail = ({ navigation }) => {
         <View style={registerPhoneStyles.container}>
           <Text style={registerPhoneStyles.titles}>¿Cuál es tu email?</Text>
           <View style={registerPhoneStyles.inputsContainer}>
-            <Text style={registerPhoneStyles.inputsTitle}>EMAIL</Text>
+            <Text style={registerPhoneStyles.inputsTitle}>Email</Text>
             <View>
               <TextInput
                 autoCorrect={false}

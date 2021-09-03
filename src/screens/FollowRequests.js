@@ -17,7 +17,6 @@ import { followersById, pendingRequests, RejectUser } from '../api/ApiService';
 import EditProfileHeader from '../components/Header/EditProfileHeader';
 import RequestScreen from '../components/Request/RequestScreen';
 import { GlobalSessionContext } from '../context/sessionContext';
-import { editProfileStyles } from '../styles/editStyles';
 import { loginStyles } from '../styles/login';
 import { requestsStyles } from '../styles/requestsStyles';
 

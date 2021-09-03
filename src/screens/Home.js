@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { ListItem, Avatar, Badge } from 'react-native-elements';
+import { ListItem, Avatar } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   KeyboardAvoidingView,
@@ -10,34 +10,18 @@ import {
 } from 'react-native';
 import { GlobalSessionContext } from '../context/sessionContext';
 import { ScrollView } from 'react-native-gesture-handler';
-import ListChat from '../components/Chat/ListChat';
 import HeaderHome from '../components/Header/HeaderHome';
 import { homeStyles } from '../styles/homeStyles';
 import MenuModal from '../components/Menu/MenuModal';
 import AddModal from '../components/Add/AddModal';
-import {
-  getMyGroups,
-  getUserForNick,
-  getCoGroups,
-  getAllUsers,
-} from '../api/ApiService';
-import { Box, SectionList, Center, NativeBaseProvider } from 'native-base';
-import { opacity, width } from 'styled-system';
-import { rowInfoStyles } from '../styles/rowInfoStyles';
+import { getMyGroups, getUserForNick, getCoGroups } from '../api/ApiService';
 
 const Home = ({ navigation }) => {
-  const [user, setUser] = useState({});
-  const [userImage, setUserImage] = useState('');
-  const [userList, setUserList] = useState([]);
-  const [search, setSearch] = useState('');
   const { sessionState, SessionActions, dispatchSession } =
     useContext(GlobalSessionContext);
 
+  const [userList, setUserList] = useState([]);
   const [groups, setGroups] = useState([]);
-  const [imageUser, setImageUser] = useState('');
-
-  const handleShowContacts = () =>
-    dispatchSession(SessionActions.SessionOpenContacts);
 
   const list = [
     {
@@ -110,11 +94,9 @@ const Home = ({ navigation }) => {
 
   const validateUser = async () => {
     const userInfo = await AsyncStorage.getItem('userInfo');
-    const image = await AsyncStorage.getItem('userImage');
 
     if (userInfo) {
       const data = JSON.parse(userInfo);
-      setUserImage(image);
       getImage();
       dispatchSession(
         SessionActions.sessionAuthenticate({
@@ -138,12 +120,9 @@ const Home = ({ navigation }) => {
           a.push(g.data.data[i].groupId);
         }
         const co = await getCoGroups(a, id);
-        setGroups(co.data); //Guardar a nivel storage, Setbandera(local storage)= para no renderizar muchas veces
+        setGroups(co.data);
         console.log(groups);
       }
-
-      //const contacts = await getContacts(sessionState.id);
-      //setContactsState([...contacts]);
     } else {
       navigation.replace('LogIn');
     }
@@ -151,13 +130,10 @@ const Home = ({ navigation }) => {
 
   const getImage = async () => {
     const userImage = await AsyncStorage.getItem('userImage');
-    setImageUser('data:image/jpeg;base64,' + userImage);
-    // console.log(imageUser);
   };
 
   const getUsers = async () => {
     const users = await getUserForNick('');
-    // console.log(users.data.data);
     setUserList(users.data.data);
   };
 
@@ -172,101 +148,42 @@ const Home = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const handleSelect = index => {
-    console.log('index', index);
-  };
-
   return (
     <KeyboardAvoidingView style={homeStyles.main}>
       <StatusBar barStyle="light-content" backgroundColor="#ecf0f1" />
       <View style={homeStyles.container}>
-        {/* <ScrollView style={homeStyles.scroll}>
-          {groups?.map(chat => (
-            <ListChat key={chat.id} chat={chat} />
-          ))}
-        </ScrollView> */}
-
         <View>
           <ScrollView style={homeStyles.scroll}>
             {list.map((l, i) => (
               <TouchableOpacity
                 key={i}
                 onPress={() => {
-                  console.log('open chat...');
+                  console.log('open chat...'); //Open Chat
                 }}
                 activeOpacity={0.5}
               >
-                <ListItem key={i} bottomDivider>
+                <ListItem key={i} bottomDivider topDivider>
                   <Avatar
                     source={{ uri: l.avatar_url }}
                     size="medium"
                     rounded
                   />
                   <ListItem.Content>
-                    <ListItem.Title
-                      style={{ fontFamily: 'Metropolis-Regular' }}
-                    >
+                    <ListItem.Title style={homeStyles.listItemTitle}>
                       {l.name}
                     </ListItem.Title>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        // backgroundColor: 'red',
-                        height: 50,
-                        width: '100%',
-                      }}
-                    >
-                      <ListItem.Subtitle
-                        style={{ fontFamily: 'Metropolis-Regular' }}
-                      >
+                    <View style={homeStyles.listItemSubtitleContainer}>
+                      <ListItem.Subtitle style={homeStyles.listItemSubtitle}>
                         {l.message}
                       </ListItem.Subtitle>
-                      {/* <View style={{flexDirection:"row",justifyContent:'space-evenly'}}> */}
-                      <View
-                        style={{
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          // backgroundColor: 'red',
-                          // height:'100%'
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontFamily: 'Metropolis-Regular',
-                            fontSize: 14,
-                            color: 'gray',
-                          }}
-                        >
-                          11:12 PM
-                        </Text>
-                        <View style={{ padding: 10 }}>
-                          <View
-                            style={{
-                              backgroundColor: '#0EADFF',
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              borderRadius: 50,
-                              width: 20,
-                              height: 20,
-                              alignSelf: 'center',
-                            }}
-                          >
-                            <Text
-                              style={{
-                                fontFamily: 'Metropolis-Regular',
-                                fontSize: 12,
-                                color: '#F0F2F4',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              99
-                            </Text>
+                      <View style={homeStyles.messageTimeContainer}>
+                        <Text style={homeStyles.messageTime}>11:12 PM</Text>
+                        <View style={homeStyles.padding}>
+                          <View style={homeStyles.messageBadgeContainer}>
+                            <Text style={homeStyles.messageBadgeText}>99</Text>
                           </View>
                         </View>
                       </View>
-                      {/* </View> */}
                     </View>
                   </ListItem.Content>
                 </ListItem>

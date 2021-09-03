@@ -79,7 +79,7 @@ const RegisterName = ({ navigation }) => {
           <Text style={registerNameStyles.titles}>¿Cómo te llamas?</Text>
           <View style={registerNameStyles.inputsContainer}>
             <Text style={registerNameStyles.inputsTitle}>
-              NOMBRE Y APELLIDO
+              Nombre y Apellido
             </Text>
             <TextInput
               autoCorrect={false}
