@@ -8,7 +8,6 @@ import Home from '../screens/Home';
 import RoomChat from '../screens/RoomChat';
 import ChatRoom from '../screens/Chat/ChatRoom';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import { padding } from 'styled-system';
 import { Avatar, Icon } from 'react-native-elements';
 
 const Stack = createStackNavigator();
@@ -33,29 +32,35 @@ const HomeRouter = () => {
           component={ChatRoom}
           options={({ navigation }) => ({
             headerRight: () => (
-              <View style={styles.iconContainer}>
+              // <View style={styles.iconContainer}>
+              //   {/*
+              //   <TouchableOpacity>
+              //     <Icon type="ionicon" name={'chatbubble'} color="white" />
+              //   </TouchableOpacity>
+              //   <TouchableOpacity>
+              //     <Icon type="ionicon" name={'call'} color="white" />
+              //   </TouchableOpacity>
+              //   <TouchableOpacity>
+              //     <Icon
+              //       type="ionicon"
+              //       name={'ellipsis-vertical'}
+              //       color="white"
+              //     />
+              //   </TouchableOpacity> */}
+              // </View>
+              <View style={{ paddingRight: 15 }}>
                 <TouchableOpacity>
-                  <Icon type="ionicon" name={'videocam'} color="white" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Icon type="ionicon" name={'call'} color="white" />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Icon
-                    type="ionicon"
-                    name={'ellipsis-vertical'}
-                    color="white"
-                  />
+                  <Icon type="ionicon" name={'chatbubble'} color="white" />
                 </TouchableOpacity>
               </View>
             ),
-            headerTitle: 'Cesar Briones', //Username
+            headerTitle: 'Sween',
             headerLeft: ({ navigation }) => (
               <View style={styles.iconContainer}>
                 <Icon type="ionicon" name={'arrow-back'} color="white" />
                 <Avatar
                   avatarStyle={{
-                    borderWidth: 1,
+                    borderWidth: 1.5,
                     borderColor: 'white',
                   }}
                   size="small"
@@ -68,7 +73,7 @@ const HomeRouter = () => {
                 />
               </View>
             ),
-            headerTitleStyle: { alignSelf: 'center' },
+            headerTitleStyle: { alignSelf: 'flex-start', padding: 25 },
             headerTintColor: 'white',
             headerStyle: {
               backgroundColor: '#0EADFF',

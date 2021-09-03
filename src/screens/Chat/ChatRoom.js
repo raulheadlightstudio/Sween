@@ -13,7 +13,8 @@ import TextBarChat from '../../components/Chat/TextBarChat';
 import { GlobalSessionContext } from '../../context/sessionContext';
 import { chatMsgStyles } from '../../styles/chatStyles';
 import { editPageStyles } from '../../styles/editStyles';
-import { Icon } from 'react-native-elements';
+import { Icon, Chip } from 'react-native-elements';
+import SystemMsg from '../../components/Chat/SystemMsg';
 
 const ChatRoom = () => {
   const { sessionState, SessionActions, dispatchSession } =
@@ -28,30 +29,33 @@ const ChatRoom = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={editPageStyles.main}>
           <ScrollView style={editPageStyles.scrollContainer}>
-            <Text style={editPageStyles.lastMsgTitle}>02/02/2022</Text>
+            <SystemMsg messageType="systemDateMessage" />
+            <SystemMsg
+              messageType="privacyTerm"
+              msg="🔒 Los mensajes enviados a este chat ahora estan seguros con cifrado
+            de extremo a extermo. Pulsa para mas informacion."
+            />
             <ChatMsg
               author="YO"
               type="text"
               msg="Empezamos transmisión en 5 mins 📹😜🙌 te espero!!"
             />
-            <ChatMsg author="Caesar Briones" type="img" msg="Soy yo" />
+            <SystemMsg messageType="userAdded" />
+            <ChatMsg
+              author="Caesar Briones"
+              type="img"
+              msg="Hola grupo, me presento me llamo Cesar Briones 👋"
+            />
             <ChatMsg
               author="YO"
               type="text"
-              msg="Ya Iniciamos la transmisión 📹😜🙌"
+              msg="Hola Cesar, un gusto tenerte en el grupo"
             />
             <ChatMsg
-              author="Caesar Briones"
+              author="Raul Martinez"
               type="text"
-              msg="Enterado 📹😜🙌"
+              msg="Saludos a todos🙌"
             />
-            <Text style={editPageStyles.lastMsgTitle}>Hoy</Text>
-            <ChatMsg
-              author="Caesar Briones"
-              type="text"
-              msg="Hola, como estas?"
-            />
-            <ChatMsg author="YO" type="text" msg="Bien y tu?" />
           </ScrollView>
           <TextBarChat />
         </View>

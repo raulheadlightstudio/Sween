@@ -30,7 +30,9 @@ const ChatMsg = ({ author, type, msg }) => {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Image
-              source={require(`../../../public/imgs/profileImg.png`)}
+              source={{
+                uri: 'https://res.cloudinary.com/dslc2vjcz/image/upload/v1630712539/mifoto_e6ach5.jpg',
+              }}
               style={chatMsgStyles.msgImg}
             />
           </View>

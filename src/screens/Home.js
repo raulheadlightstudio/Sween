@@ -15,6 +15,8 @@ import { homeStyles } from '../styles/homeStyles';
 import MenuModal from '../components/Menu/MenuModal';
 import AddModal from '../components/Add/AddModal';
 import { getMyGroups, getUserForNick, getCoGroups } from '../api/ApiService';
+import { SafeAreaView } from 'react-native';
+import SystemMsg from '../components/Chat/SystemMsg';
 
 const Home = ({ navigation }) => {
   const { sessionState, SessionActions, dispatchSession } =

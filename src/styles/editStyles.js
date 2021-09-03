@@ -20,6 +20,7 @@ const editPageStyles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Metropolis-Regular',
     color: '#9A9FA7',
+    fontSize: 13,
   },
 });
 
