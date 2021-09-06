@@ -10,14 +10,6 @@ const RequestScreen = ({ request, section, onPress }) => {
   const { sessionState, SessionActions, dispatchSession } =
     useContext(GlobalSessionContext);
 
-  const handleDeleteFollowerApi = async userPublicId => {
-    // dispatchSession(
-    //   SessionActions.SessionDeleteFollowerRequest(sessionState, followersArray)
-    // );
-
-    console.log('userPublicId', userPublicId);
-  };
-
   const handleReject = async id => {
     const data = JSON.pfollowedArrayarse(
       await AsyncStorage.getItem('userInfo')
@@ -37,34 +29,8 @@ const RequestScreen = ({ request, section, onPress }) => {
     AcceptUser(idSession, id);
   };
 
-  // const handleUnfollow = async obj => {
-  //   const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
-  //   const idSession = data.userPublicId;
-
-  //   Alert.alert(
-  //     'Sween',
-  //     'Estas seguro que quieres dejar de seguir a este usuario?',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         style: 'cancel',
-  //       },
-  //       {
-  //         text: 'OK',
-  //         onPress: () => handleTesting(idSession, obj),
-  //       },
-  //     ]
-  //   );
-  // };
-
-  // const handleTesting = async (id, obj) => {
-  //   stateRequest.unshift(obj);
-  //   await unfollowUser(id, obj.userPublicId);
-  // };
-
   useEffect(() => {
     setStateRequest(request);
-    // console.log('request', request);
   }, []);
 
   const Item = ({

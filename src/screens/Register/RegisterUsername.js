@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Keyboard,
 } from 'react-native';
-import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {

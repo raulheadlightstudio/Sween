@@ -110,7 +110,7 @@ const LogIn = ({ navigation }) => {
               <Text style={loginStyles.tit}>
                 Si tienes una cuenta ingresa tus datos o crea una nueva
               </Text>
-              <Text style={loginStyles.titles}>NOMBRE DE USUARIO O MÓVIL</Text>
+              <Text style={loginStyles.titles}>Nombre de Usuario o Movil</Text>
               <Stack space={2} alignItems="center">
                 <HStack space={2} alignItems="center">
                   <Select

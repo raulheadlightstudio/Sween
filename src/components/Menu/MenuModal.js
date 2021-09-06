@@ -15,7 +15,6 @@ import { Icon, Avatar } from 'react-native-elements';
 import RowInfo from './RowInfo';
 import { GlobalSessionContext } from '../../context/sessionContext';
 import { menuModalStyles } from '../../styles/modalStyles';
-import { followRequests } from '../../utils/mockData';
 import { registerImgStyles } from '../../styles/register';
 import { useImage } from '../../../hooks/useImage';
 import { useCamera } from '../../../hooks/useCamera';
@@ -36,13 +35,7 @@ const MenuModal = () => {
   const deviceHeight = Dimensions.get('window').height;
   const deviceWidth = Dimensions.get('window').width;
 
-  const {
-    imageConverted,
-    convertImage,
-    getImageByKey,
-    imageStorage,
-    converImageBase64,
-  } = useImage();
+  const { imageConverted, convertImage, converImageBase64 } = useImage();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalImage, setModalImage] = useState(false);
@@ -160,8 +153,10 @@ const MenuModal = () => {
     handleUpdateImage(base64image);
   };
 
-  const handleSiguiendo = async id => {
-    const siguiendoList = await followersById(id);
+  const handleSiguiendo = async () => {
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const idSession = data.userPublicId;
+    const siguiendoList = await followersById(idSession);
     const arraySiguiendo = siguiendoList.data.data;
     setCounterFollow(arraySiguiendo.length);
   };
@@ -175,7 +170,7 @@ const MenuModal = () => {
     handleImage();
     handleRequests();
     handleContacts();
-    handleSiguiendo(2); //quemado
+    handleSiguiendo(); //quemado
     getImageProfile();
   }, []);
 

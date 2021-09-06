@@ -112,7 +112,9 @@ const AddModal = ({ show, close, title, search, modalType, data }) => {
   }, [modalTypeState]);
 
   const handleFilterContacts = async () => {
-    const followers = await followersById(2); //quemado
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const idSession = data.userPublicId;
+    const followers = await followersById(idSession); //quemado
     setArrayFollowers(followers.data.data);
   };
 

@@ -23,7 +23,7 @@ const chatMsgStyles = StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
   },
-  msgBody: { fontFamily: 'Metropolis-Regular', fontSize: 18 },
+  msgBody: { fontFamily: 'Metropolis-Regular', fontSize: 14 },
   msgImg: {
     height: 200,
     width: 200,
