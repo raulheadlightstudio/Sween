@@ -26,13 +26,6 @@ export const getUserForPhone = async phone => {
   return response;
 };
 
-export const getMyGroups = async id => {
-  const response = await axios.get(`${baseURL}/UserGroup/MyGroups`, {
-    params: { id: id },
-  });
-  return response;
-};
-
 export const getCoGroups = async (array, id) => {
   const response = await axios.post(`${baseURL}/UserGroup/CoGroups`, array, {
     params: { id: id },
@@ -97,5 +90,22 @@ export const AcceptUser = async (id, id2) => {
 
 export const RejectUser = async (id, id2) => {
   const response = await axios.put(`${baseURL}/Contacts/Reject/${id2}/${id}`);
+  return response;
+};
+
+export const createGroup = async groupInfo => {
+  console.log('groupInfo', groupInfo);
+  const response = await axios.post(`${baseURL}/Group`, groupInfo);
+  return response;
+};
+
+export const addUserGroup = async userInfo => {
+  console.log('userInfo', userInfo);
+  const response = await axios.post(`${baseURL}/UserGroup`, userInfo);
+  return response;
+};
+
+export const getMyGroups = async nick => {
+  const response = await axios.get(`${baseURL}/Group/MyGroups?nick=${nick}`);
   return response;
 };

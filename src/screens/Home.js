@@ -14,7 +14,12 @@ import HeaderHome from '../components/Header/HeaderHome';
 import { homeStyles } from '../styles/homeStyles';
 import MenuModal from '../components/Menu/MenuModal';
 import AddModal from '../components/Add/AddModal';
-import { getMyGroups, getUserForNick, getCoGroups } from '../api/ApiService';
+import {
+  getMyGroups,
+  getUserForNick,
+  getCoGroups,
+  getContacts,
+} from '../api/ApiService';
 import { SafeAreaView } from 'react-native';
 import SystemMsg from '../components/Chat/SystemMsg';
 
@@ -24,6 +29,7 @@ const Home = ({ navigation }) => {
 
   const [userList, setUserList] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [groupList, setGroupList] = useState([]);
 
   const list = [
     {
@@ -112,21 +118,21 @@ const Home = ({ navigation }) => {
         })
       );
 
-      await AsyncStorage.setItem('id', data.userPublicId.toString());
-      const id = await AsyncStorage.getItem('id');
-      const g = await getMyGroups(id);
-      const lg = g.data.data.length;
-      let a = [];
-      if (lg > 0) {
-        for (let i = 0; i < lg; i++) {
-          a.push(g.data.data[i].groupId);
-        }
-        const co = await getCoGroups(a, id);
-        setGroups(co.data);
-        console.log(groups);
-      }
-    } else {
-      navigation.replace('LogIn');
+      //   await AsyncStorage.setItem('id', data.userPublicId.toString());
+      //   const id = await AsyncStorage.getItem('id');
+      //   const g = await getMyGroups(id);
+      //   const lg = g.data.data.length;
+      //   let a = [];
+      //   if (lg > 0) {
+      //     for (let i = 0; i < lg; i++) {
+      //       a.push(g.data.data[i].groupId);
+      //     }
+      //     const co = await getCoGroups(a, id);
+      //     setGroups(co.data);
+      //     console.log('groups', groups);
+      //   }
+      // } else {
+      //   navigation.replace('LogIn');
     }
   };
 
@@ -139,9 +145,16 @@ const Home = ({ navigation }) => {
     setUserList(users.data.data);
   };
 
+  const asyncGetMyGroups = async () => {
+    const resp = await getMyGroups('Cesar');
+    setGroupList(resp);
+    // console.log(groupList.data)
+  };
+
   useEffect(() => {
     validateUser();
     getUsers();
+    asyncGetMyGroups();
   }, []);
 
   useLayoutEffect(() => {
