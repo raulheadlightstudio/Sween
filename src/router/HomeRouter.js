@@ -57,7 +57,13 @@ const HomeRouter = () => {
             headerTitle: 'Sween',
             headerLeft: ({ navigation }) => (
               <View style={styles.iconContainer}>
-                <Icon type="ionicon" name={'arrow-back'} color="white" />
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('goBack');
+                  }}
+                >
+                  <Icon type="ionicon" name={'arrow-back'} color="white" />
+                </TouchableOpacity>
                 <Avatar
                   avatarStyle={{
                     borderWidth: 1.5,

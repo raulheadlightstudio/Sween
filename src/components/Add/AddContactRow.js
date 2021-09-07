@@ -4,7 +4,10 @@ import { Alert } from 'react-native';
 import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { Badge, Avatar } from 'react-native-elements';
 import {
+  addUserGroup,
+  createGroup,
   getContacts,
+  getMyGroups,
   sendFriendRequest,
   unfollowUser,
 } from '../../api/ApiService';
@@ -29,11 +32,92 @@ const AddContactRow = ({
   const online = true;
   const follow = true;
   const [friendRequest, setFriendRequest] = useState(false);
+  const [groupType, setGroupType] = useState(1);
+  const [groupList, setGroupList] = useState([]);
+  const [found, setFound] = useState(false);
   const { sessionState, SessionActions, dispatchSession } =
     useContext(GlobalSessionContext);
 
-  const handleChat = () => {
-    navigation.navigate('ChatRoom');
+  const asyncGetMyGroups = async () => {
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const username = data.userPublicName;
+    const resp = await getMyGroups(username);
+    setGroupList(resp.data.data);
+  };
+
+  const handleChat = async () => {
+    const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
+    const username = data.userPublicName;
+    const userId = data.userPublicId;
+
+    if (groupType === 1) {
+      const json = {
+        groupType: groupType,
+        groupDescription: 'sween14',
+        xuser: username,
+      };
+
+      // const myGroups = asyncGetMyGroups();
+
+      // for (var i = 0; i < groupList.length; i++) {
+      //   // console.log(groupList[i].groupDescription)
+      //   if (groupList[i].groupDescription === 'string') {
+      //     setFound(true);
+      //   } else {
+      //     setFound(false);
+      //   }
+      // }
+
+      // if (found) {
+      //   console.log('No crear el chat ya que ya existe');
+      // } else {
+      //   console.log('Logica apra crear el chat');
+      // }
+
+      console.log('Zacks id', userPublicId);
+
+      try {
+        const response = await createGroup(json);
+        console.log('response.data.groupId', response.data.groupId);
+        const json2 = {
+          userId: userId,
+          groupId: response.data.groupId,
+        };
+        const json3 = {
+          userId: userPublicId,
+          groupId: response.data.groupId,
+        };
+        try {
+          const resp = await addUserGroup(json2);
+          const resp2 = await addUserGroup(json3);
+
+          Alert.alert('Sween', 'Grupo creado con Exito!', [
+            {
+              text: 'Confirmar',
+            },
+          ]);
+          navigation.navigate('ChatRoom');
+        } catch (error) {
+          Alert.alert('Sween', error, [
+            {
+              text: 'Confirmar',
+            },
+          ]);
+        }
+      } catch (error) {
+        Alert.alert('Sween', error, [
+          {
+            text: 'Confirmar',
+          },
+        ]);
+      }
+    } else {
+      Alert.alert('Sween', 'Invalid group Type', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
+    }
   };
 
   const handleDeleteContact = (
@@ -153,7 +237,7 @@ const AddContactRow = ({
             style={addContactRowStyles.pendingContainer}
           >
             <View>
-              <Text style={addContactRowStyles.pendingTitle}>Chat</Text>
+              <Text style={addContactRowStyles.pendingTitle}>Chatxd</Text>
             </View>
           </TouchableOpacity>
         ) : (
