@@ -67,6 +67,7 @@ const sessionCloseAddFriend = () => {
 };
 
 const sessionOpenAddChat = () => {
+  console.log('sessionOpenAddChat');
   return {
     type: types.SessionOpenAddChat,
     payload: {
@@ -76,6 +77,7 @@ const sessionOpenAddChat = () => {
 };
 
 const sessionCloseAddChat = () => {
+  console.log('sessionCloseAddChat');
   return {
     type: types.SessionCloseAddChat,
     payload: {

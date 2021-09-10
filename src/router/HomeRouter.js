@@ -9,6 +9,8 @@ import RoomChat from '../screens/RoomChat';
 import ChatRoom from '../screens/Chat/ChatRoom';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { Avatar, Icon } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import ChatHeaderLeft from '../components/Chat/ChatHeaderLeft';
 
 const Stack = createStackNavigator();
 
@@ -30,55 +32,46 @@ const HomeRouter = () => {
         <Stack.Screen
           name="ChatRoom"
           component={ChatRoom}
-          options={({ navigation }) => ({
+          options={({ route, navigation }) => ({
             headerRight: () => (
-              // <View style={styles.iconContainer}>
-              //   {/*
-              //   <TouchableOpacity>
-              //     <Icon type="ionicon" name={'chatbubble'} color="white" />
-              //   </TouchableOpacity>
-              //   <TouchableOpacity>
-              //     <Icon type="ionicon" name={'call'} color="white" />
-              //   </TouchableOpacity>
-              //   <TouchableOpacity>
-              //     <Icon
-              //       type="ionicon"
-              //       name={'ellipsis-vertical'}
-              //       color="white"
-              //     />
-              //   </TouchableOpacity> */}
-              // </View>
               <View style={{ paddingRight: 15 }}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('route', route.params.userPublicId);
+                  }}
+                >
                   <Icon type="ionicon" name={'chatbubble'} color="white" />
                 </TouchableOpacity>
               </View>
             ),
-            headerTitle: 'Sween',
-            headerLeft: ({ navigation }) => (
-              <View style={styles.iconContainer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log('goBack');
-                  }}
-                >
-                  <Icon type="ionicon" name={'arrow-back'} color="white" />
-                </TouchableOpacity>
-                <Avatar
-                  avatarStyle={{
-                    borderWidth: 1.5,
-                    borderColor: 'white',
-                  }}
-                  size="small"
-                  rounded
-                  onPress={() => console.log('ModalImage!')}
-                  activeOpacity={0.7}
-                  source={{
-                    uri: 'https://res.cloudinary.com/dslc2vjcz/image/upload/v1629477020/gettyimages-1282775976-612x612_hy4dwo.jpg',
-                  }}
-                />
-              </View>
-            ),
+            headerTitle: route.params.dataUser.userName,
+            headerLeft: () => <ChatHeaderLeft imageurl={route.params.dataUser.imageurl} />,
+            // headerLeft: () => (
+            //   <View style={styles.iconContainer}>
+            //     <TouchableOpacity
+            //       onPress={() => {
+            //         navigation.navigate('Home');
+            //       }}
+            //     >
+            //       <Icon type="ionicon" name={'arrow-back'} color="white" />
+            //     </TouchableOpacity>
+            //     <Avatar
+            //       avatarStyle={{
+            //         borderWidth: 1.5,
+            //         borderColor: 'white',
+            //       }}
+            //       size="small"
+            //       rounded
+            //       onPress={() => console.log('ModalImage!')}
+            //       activeOpacity={0.7}
+            //       source={{
+            //         uri:
+            //           'data:image/jpeg;base64,' +
+            //           route.params.dataUser.imageurl,
+            //       }}
+            //     />
+            //   </View>
+            // ),
             headerTitleStyle: { alignSelf: 'flex-start', padding: 25 },
             headerTintColor: 'white',
             headerStyle: {

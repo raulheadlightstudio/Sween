@@ -16,10 +16,7 @@ import { editPageStyles } from '../../styles/editStyles';
 import { Icon, Chip } from 'react-native-elements';
 import SystemMsg from '../../components/Chat/SystemMsg';
 
-const ChatRoom = () => {
-  const { sessionState, SessionActions, dispatchSession } =
-    useContext(GlobalSessionContext);
-
+const ChatRoom = props => {
   return (
     <KeyboardAvoidingView
       style={editPageStyles.container}
@@ -56,6 +53,13 @@ const ChatRoom = () => {
               type="text"
               msg="Saludos a todos🙌"
             />
+            {/* <TouchableOpacity
+              onPress={() => {
+                // console.log(props.route.params.userPublicId);
+              }}
+            >
+              <Text>asdasd</Text>
+            </TouchableOpacity> */}
           </ScrollView>
           <TextBarChat />
         </View>

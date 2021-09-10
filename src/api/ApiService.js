@@ -105,7 +105,14 @@ export const addUserGroup = async userInfo => {
   return response;
 };
 
-export const getMyGroups = async nick => {
-  const response = await axios.get(`${baseURL}/Group/MyGroups?nick=${nick}`);
+export const getMyGroups = async (nick, id) => {
+  const response = await axios.get(
+    `${baseURL}/Group/MyGroups?nick=${nick}&id=${id}`
+  );
+  return response;
+};
+
+export const getMyUserGroup = async id => {
+  const response = await axios.get(`${baseURL}/UserGroup/MyGroups?id=${id}`);
   return response;
 };

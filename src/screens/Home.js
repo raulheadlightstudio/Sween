@@ -146,7 +146,7 @@ const Home = ({ navigation }) => {
   };
 
   const asyncGetMyGroups = async () => {
-    const resp = await getMyGroups('Cesar');
+    const resp = await getMyGroups('Cesar', 1);
     setGroupList(resp);
     // console.log(groupList.data)
   };
@@ -165,7 +165,7 @@ const Home = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={homeStyles.main}>
-      <StatusBar barStyle="light-content" backgroundColor="#ecf0f1" />
+      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View style={homeStyles.container}>
         <View>
           <ScrollView style={homeStyles.scroll}>

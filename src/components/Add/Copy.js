@@ -8,6 +8,7 @@ import {
   createGroup,
   getContacts,
   getMyGroups,
+  getMyUserGroup,
   sendFriendRequest,
   unfollowUser,
 } from '../../api/ApiService';
@@ -34,7 +35,10 @@ const AddContactRow = ({
   const [friendRequest, setFriendRequest] = useState(false);
   const [groupType, setGroupType] = useState(1);
   const [groupList, setGroupList] = useState([]);
-  const [found, setFound] = useState();
+  const [groupList2, setGroupList2] = useState([]);
+  const [communGroups, setCommunGroups] = useState([]);
+  const [myGroupsList, setMyGroupsList] = useState([]);
+  const [found, setFound] = useState(false);
   const { sessionState, SessionActions, dispatchSession } =
     useContext(GlobalSessionContext);
 
@@ -42,194 +46,180 @@ const AddContactRow = ({
     const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
     const username = data.userPublicName;
     const userId = data.userPublicId;
-    const resp = await getMyGroups(username, userId);
+    const resp = await getMyUserGroup(userId);
+    const resp2 = await getMyUserGroup(userPublicId);
+    const resp3 = await getMyGroups(username, userId);
     setGroupList(resp.data.data);
-    // console.log('groupList', groupList);
+    setGroupList2(resp2.data.data);
+    setMyGroupsList(resp3.data.data);
+    // console.log('Obteniendo la lista del usuario ', userId);
+    // console.log('Listam de usuarios de resp', groupList);
+    // console.log('Obteniendo la lista del usuario ', userPublicId);
+    // console.log('Lista de usuarios de resp2 ', groupList2);
   };
-
-  //issue123
 
   const handleChat = async () => {
     const data = JSON.parse(await AsyncStorage.getItem('userInfo'));
     const username = data.userPublicName;
-    //id de mi usuario
-    const userId = data.userPublicId;
-    const resp = await getMyGroups(username, userId);
-    const gList = resp.data.data;
-
-    //array de los grupos
-    console.log('groupList', gList);
-
-    console.log('id arturo', userPublicId);
-    console.log('id mio', userId);
 
     if (groupType === 1) {
-      const groupInfoPost = {
+      const json = {
         groupType: groupType,
-        groupDescription: 'chatluca',
+        groupDescription: 'sween1',
         xuser: username,
       };
+
+      const dataUser = {
+        userName: userName,
+        imageurl: imageurl,
+      };
+
+      // asyncGetMyGroups();
+
       try {
-        const dataUser = {
-          userName: userName,
-          imageurl: imageurl,
+        const response = await createGroup(json);
+        console.log('response.data.groupId', response.data.groupId);
+        const json2 = {
+          userId: userId,
+          groupId: response.data.groupId,
         };
-        let isFound = gList.some(
-          user => user['user1'] === userId && user['user2'] === userPublicId
-        );
+        const json3 = {
+          userId: userPublicId,
+          groupId: response.data.groupId,
+        };
+        try {
+          const resp = await addUserGroup(json2);
+          const resp2 = await addUserGroup(json3);
 
-        if (isFound) {
+          Alert.alert('Sween', 'Grupo creado con Exito!', [
+            {
+              text: 'Confirmar',
+            },
+          ]);
           navigation.navigate('ChatRoom', { dataUser: dataUser });
-        } else {
-          console.log('Crear grupo');
-          const response = await createGroup(groupInfoPost);
-          console.log('response', response.data);
-          try {
-            const user1 = {
-              userId: userId,
-              groupId: response.data.groupId,
-            };
-            const user2 = {
-              userId: userPublicId,
-              groupId: response.data.groupId,
-            };
-            const dataUser = {
-              userName: userName,
-              imageurl: imageurl,
-            };
-            const resp = await addUserGroup(user1);
-            const resp2 = await addUserGroup(user2);
-            navigation.navigate('ChatRoom', { dataUser: dataUser });
-          } catch (error) {
-            console.log('error al anadir los usuarios');
-          }
+        } catch (error) {
+          Alert.alert('Sween', error, [
+            {
+              text: 'Confirmar',
+            },
+          ]);
         }
-
-        console.log('isFound', isFound);
       } catch (error) {
-        console.log('error al crear el grupo');
+        Alert.alert('Sween', error, [
+          {
+            text: 'Confirmar',
+          },
+        ]);
       }
 
-      //old
-      // try {
-      //   //             const response = await createGroup(json);
-      //   //             console.log('response.data.groupId', response.data.groupId);
-      //   //             const json2 = {
-      //   //               userId: userId,
-      //   //               groupId: response.data.groupId,
-      //   //             };
-      //   //             const json3 = {
-      //   //               userId: userPublicId,
-      //   //               groupId: response.data.groupId,
-      //   //             };
-      //   //             try {
-      //   //               const resp = await addUserGroup(json2);
-      //   //               const resp2 = await addUserGroup(json3);
-      //   //               Alert.alert('Sween', 'Grupo creado con Exito!', [
-      //   //                 {
-      //   //                   text: 'Confirmar',
-      //   //                 },
-      //   //               ]);
-      //   //               navigation.navigate('ChatRoom', { dataUser: dataUser });
-      //   //             } catch (error) {
-      //   //               Alert.alert('Sween', error, [
-      //   //                 {
-      //   //                   text: 'Confirmar',
-      //   //                 },
-      //   //               ]);
-      //   //             }
+      // if (myGroupsList.some(e => e.groupDescription === 'sween')) {
+      //   console.log('true');
+      // } else {
+      //   console.log('false');
+
+      //   try {
+      //     const response = await createGroup(json);
+      //     console.log('response.data.groupId', response.data.groupId);
+      //     const json2 = {
+      //       userId: userId,
+      //       groupId: response.data.groupId,
+      //     };
+      //     const json3 = {
+      //       userId: userPublicId,
+      //       groupId: response.data.groupId,
+      //     };
+      //     try {
+      //       const resp = await addUserGroup(json2);
+      //       const resp2 = await addUserGroup(json3);
+
+      //       Alert.alert('Sween', 'Grupo creado con Exito!', [
+      //         {
+      //           text: 'Confirmar',
+      //         },
+      //       ]);
+      //       navigation.navigate('ChatRoom', { dataUser: dataUser });
+      //     } catch (error) {
+      //       Alert.alert('Sween', error, [
+      //         {
+      //           text: 'Confirmar',
+      //         },
+      //       ]);
+      //     }
+      //   } catch (error) {
+      //     Alert.alert('Sween', error, [
+      //       {
+      //         text: 'Confirmar',
+      //       },
+      //     ]);
+      //   }
+      // }
+
+      // if (
+      //   myGroupsList.filter(e => e.groupDescription === 'string1').length > 0
+      // ) {
+      //   console.log('Ya existe!');
+      // } else {
+      //   console.log('NO existe!');
+      //   //   try {
+      //   //   const response = await createGroup(json);
+      //   //   console.log('response.data.groupId', response.data.groupId);
+      //   //   const json2 = {
+      //   //     userId: userId,
+      //   //     groupId: response.data.groupId,
+      //   //   };
+      //   //   const json3 = {
+      //   //     userId: userPublicId,
+      //   //     groupId: response.data.groupId,
+      //   //   };
+      //   //   try {
+      //   //     const resp = await addUserGroup(json2);
+      //   //     const resp2 = await addUserGroup(json3);
+
+      //   //     Alert.alert('Sween', 'Grupo creado con Exito!', [
+      //   //       {
+      //   //         text: 'Confirmar',
+      //   //       },
+      //   //     ]);
+      //   //     navigation.navigate('ChatRoom', { dataUser: dataUser });
+      //   //   } catch (error) {
+      //   //     Alert.alert('Sween', error, [
+      //   //       {
+      //   //         text: 'Confirmar',
+      //   //       },
+      //   //     ]);
+      //   //   }
+      //   // } catch (error) {
+      //   //   Alert.alert('Sween', error, [
+      //   //     {
+      //   //       text: 'Confirmar',
+      //   //     },
+      //   //   ]);
+      //   // }
+      // }
+
+      // for (var i = 0; i < groupList.length; i++) {
+      //   console.log('Comparar', groupList[i].groupDescription);
+      //   if (groupList[i].groupDescription === 'string') {
+      //     setFound(true);
+      //     console.log('Ya existe!', found);
+      //   } else {
+      //     setFound(false);
+      //     console.log('No existe', found);
+      //   }
+      // }
+
+      // if (found) {
+      //   console.log('No crear el chat ya que ya existe');
+      // } else {
+      //   console.log('Logica apra crear el chat');
+      // }
+    } else {
+      Alert.alert('Sween', 'Invalid group Type', [
+        {
+          text: 'Confirmar',
+        },
+      ]);
     }
-    //   const json = {
-    //     groupType: groupType,
-    //     groupDescription: 'chatzack',
-    //     xuser: username,
-    //   };
-
-    //   const dataUser = {
-    //     userName: userName,
-    //     imageurl: imageurl,
-    //   };
-
-    //   const myGroups = asyncGetMyGroups();
-
-    //   for (var i = 0; i < groupList.length; i++) {
-    //     const groupListlenght = groupList.length;
-    //     if (groupList[i].groupDescription === 'chatzack') {
-    //       setFound(true);
-    //       console.log('groupId', groupList[i].groupId);
-    //       console.log(
-    //         'groupList',
-    //         groupList[i].groupDescription,
-    //         'index',
-    //         i,
-    //         found
-    //       );
-
-    //       if (found) {
-    //         navigation.navigate('ChatRoom', { dataUser: dataUser });
-    //       } else {
-    //         console.log('...1');
-    //       }
-
-    //       break;
-    //     } else {
-    //       if (i === groupListlenght - 1) {
-    //         setFound(false);
-    //         if (!found) {
-    //           console.log('crear grupo');
-    //           try {
-    //             const response = await createGroup(json);
-    //             console.log('response.data.groupId', response.data.groupId);
-    //             const json2 = {
-    //               userId: userId,
-    //               groupId: response.data.groupId,
-    //             };
-    //             const json3 = {
-    //               userId: userPublicId,
-    //               groupId: response.data.groupId,
-    //             };
-    //             try {
-    //               const resp = await addUserGroup(json2);
-    //               const resp2 = await addUserGroup(json3);
-    //               Alert.alert('Sween', 'Grupo creado con Exito!', [
-    //                 {
-    //                   text: 'Confirmar',
-    //                 },
-    //               ]);
-    //               navigation.navigate('ChatRoom', { dataUser: dataUser });
-    //             } catch (error) {
-    //               Alert.alert('Sween', error, [
-    //                 {
-    //                   text: 'Confirmar',
-    //                 },
-    //               ]);
-    //             }
-    //           } catch (error) {
-    //             Alert.alert('Sween', error, [
-    //               {
-    //                 text: 'Confirmar',
-    //               },
-    //             ]);
-    //           }
-    //         } else {
-    //           console.log('...2');
-    //         }
-    //       }
-    //     }
-    //   }
-
-    //   // if (found) {
-    //   //   console.log('No crear el chat ya que ya existe');
-    //   // } else {
-    //   //   console.log('Logica apra crear el chat');
-    //   // }
-    // } else {
-    //   Alert.alert('Sween', 'Invalid group Type', [
-    //     {
-    //       text: 'Confirmar',
-    //     },
-    //   ]);
-    // }
   };
 
   const handleDeleteContact = (
@@ -284,10 +274,6 @@ const AddContactRow = ({
     setFriendRequest(!friendRequest);
     sendFriendRequest(idSession, idRequest);
   };
-
-  useEffect(() => {
-    // asyncGetMyGroups();
-  }, []);
 
   return (
     <View style={addContactRowStyles.container}>

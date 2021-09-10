@@ -19,8 +19,10 @@ const HeaderHome = ({ navigation }) => {
   const handleAddFriend = () =>
     dispatchSession(SessionActions.sessionOpenAddFriend());
 
-  const handleAddChat = () =>
+  const handleAddChat = () => {
+    console.log('Abriendo chat');
     dispatchSession(SessionActions.sessionOpenAddChat());
+  };
 
   const handleGroup = () => dispatchSession(SessionActions.sessionOpenGroup());
 
