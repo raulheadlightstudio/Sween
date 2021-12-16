@@ -21,7 +21,7 @@ import {
 } from 'native-base';
 import {loginStyles} from '../styles/login';
 import {registerErrorStyles} from '../styles/register';
-// import { getUserForPhone } from '../api/ApiService';
+import {getUserForPhone} from '../api/ApiService';
 
 const theme = extendTheme({
   components: {
@@ -63,9 +63,15 @@ const LogIn = ({navigation}) => {
     navigation.navigate('Register');
   };
 
+  const lenghtObject = () => {
+    var element_count = 0;
+    for (var e in myArray) if (myArray.hasOwnProperty(e)) element_count++;
+  };
+
   const handleLogIn = async () => {
     if (logState.phone.length > 9) {
       await AsyncStorage.setItem('phone_ext', ext + logState.phone);
+      console.log('setted', ext + logState.phone);
     } else {
       Alert.alert('Sween', 'Por favor ingresa 10 digitos válidos', [
         {
@@ -77,8 +83,10 @@ const LogIn = ({navigation}) => {
     try {
       await AsyncStorage.setItem('phone', logState.phone);
       const response = await getUserForPhone(logState.phone);
-      const rp = response.data.data;
-      if (rp === null) {
+      const rp = response.data;
+      console.log('rpprprprprpr', response.data);
+      const {birthday} = response.data;
+      if (birthday === undefined) {
         Alert.alert('Sween', 'Eres nuevo por aqui? Registrate', [
           {
             text: 'Confirmar',
@@ -88,7 +96,7 @@ const LogIn = ({navigation}) => {
         navigation.navigate('Validation');
       }
     } catch (ex) {
-      Alert.alert('Sween', 'Asegurate de estar conectadoa una red', [
+      Alert.alert('Sween', 'Asegurate de estar conectado a una red', [
         {
           text: 'Confirmar',
         },

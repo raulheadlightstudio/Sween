@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "207526697204",
+    "project_id": "sween-26e3b",
+    "storage_bucket": "sween-26e3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207526697204:android:11aceb05da38c9301726a1",
+        "android_client_info": {
+          "package_name": "com.sween"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207526697204-u63sko9dgudalktqg2hrdtnka5vojbt6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sween",
+            "certificate_hash": "0946881a8b01a6ab95e84966ddeb13f19db6afba"
+          }
+        },
+        {
+          "client_id": "207526697204-isej7dps7vvfnesn7q91c6212heflbfn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACw4uwnjl-rLCSTcZPEgzsnUQ7EFqL0zo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207526697204-isej7dps7vvfnesn7q91c6212heflbfn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
